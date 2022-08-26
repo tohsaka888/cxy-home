@@ -1,0 +1,1 @@
+export const loginUrl = `https://cxy-home-login.vercel.app`
