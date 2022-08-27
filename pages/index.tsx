@@ -1,4 +1,5 @@
 import Header from '@components/Header'
+import HomePage from '@components/HomePage'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
@@ -17,9 +18,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Header />
         <StarBackground />
-        {/* <FloatText /> */}
+        <HomePage />
       </main>
     </div>
   )
