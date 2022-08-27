@@ -1,10 +1,7 @@
-import Header from '@components/Header'
 import HomePage from '@components/HomePage'
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
