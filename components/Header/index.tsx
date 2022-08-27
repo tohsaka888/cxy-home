@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ButtonArea, Container, Flex, Logo } from './index.styled'
 import { Button, Menu } from 'antd'
-import { BsGithub, BsArrowsFullscreen, BsFullscreenExit } from 'react-icons/bs'
+import { BsGithub, BsXCircleFill, BsFillArrowUpCircleFill } from 'react-icons/bs'
 import { MenuItems } from './MenuItems'
 import { useRouter } from 'next/router'
 
@@ -30,25 +30,26 @@ function Header() {
 
 
       <ButtonArea>
-        <Button
-          style={{ marginRight: '16px', background: 'linear-gradient(30deg, #c850c0, #ffcc70)' }}
-          icon={isFullScreen
-            ? <BsFullscreenExit size={16} style={{ marginTop: '5px', color: '#fff' }} />
-            : <BsArrowsFullscreen size={16} style={{ marginTop: '5px', marginLeft: '0.5px', color: '#fff' }} />}
-          shape={'circle'}
-          onClick={() => {
-            setIsFullScreen(!isFullScreen)
-            if (!isFullScreen) {
-              document.documentElement.requestFullscreen()
-            } else {
-              document.exitFullscreen()
-            }
-          }}
-        />
-        <Button
-          style={{ marginRight: '16px', background: 'linear-gradient(30deg, #c850c0, #ffcc70)' }}
-          icon={<BsGithub size={20} style={{ marginTop: '3px', marginLeft: '0.5px', color: '#fff' }} />} shape={'circle'}
-        />
+        {!isFullScreen
+          ? <BsFillArrowUpCircleFill size={28} style={{ marginRight: '16px', color: '#fff' }}
+            onClick={() => {
+              setIsFullScreen(!isFullScreen)
+              if (!isFullScreen) {
+                document.documentElement.requestFullscreen()
+              } else {
+                document.exitFullscreen()
+              }
+            }} />
+          : <BsXCircleFill size={28} style={{ marginRight: '16px', color: '#fff' }}
+            onClick={() => {
+              setIsFullScreen(!isFullScreen)
+              if (!isFullScreen) {
+                document.documentElement.requestFullscreen()
+              } else {
+                document.exitFullscreen()
+              }
+            }} />}
+        <BsGithub size={28} style={{ marginRight: '16px', color: '#fff' }} />
         <Button type="primary" shape='round'>登录</Button>
       </ButtonArea>
     </Container >
