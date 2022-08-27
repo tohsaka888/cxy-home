@@ -1,7 +1,5 @@
 import { baseUrl } from '@config/baseUrl';
-import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react'
-import svgCaptcha from 'svg-captcha'
 
 function useAuthCode() {
   const [authcode, setAuthcode] = useState<{ data: string; text: string }>({ data: '', text: '' })
