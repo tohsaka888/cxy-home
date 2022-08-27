@@ -17,6 +17,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "styled-components": "^5.3.5",
+    "svg-captcha": "^1.4.0",
     "three": "^0.124.0",
     "vanta": "^0.5.22"
   },
