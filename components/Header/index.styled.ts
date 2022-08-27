@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Flex = styled.div`
+  display: flex;
+`
+
 export const Container = styled.div`
   background-color: transparent;
   height: 60px;
@@ -9,6 +13,7 @@ export const Container = styled.div`
   justify-content: space-between;
   position: fixed;
   width: 100vw;
+  /* box-shadow:0px 0px 5px 2px #cecece;  */
 `
 
 export const ButtonArea = styled.div`
@@ -24,4 +29,5 @@ export const Logo = styled.div`
   font-weight: bolder;
   letter-spacing: 0;
   font-style: italic;
+  cursor: pointer;
 `
