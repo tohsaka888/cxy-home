@@ -9,20 +9,6 @@ import { useCallback, useContext, useEffect } from 'react'
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
 const Home: NextPage<{ list: Competition.List[] }> = ({ list }) => {
-  const { setList } = useContext(ListContext)!
-
-  const getList = useCallback(async () => {
-    const res = await fetch(`${competitionUrl}/api/brief`, {
-      mode: 'cors'
-    })
-    const data = await res.json()
-    setList(data.list)
-  }, [setList])
-
-  useEffect(() => {
-    getList()
-  }, [getList, list, setList])
-
   return (
     <div>
       <Head>
