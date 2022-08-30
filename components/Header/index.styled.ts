@@ -5,7 +5,7 @@ export const Flex = styled.div`
 `
 
 export const Container = styled.div<{ isHomePage: boolean }>`
-  background-color: ${({isHomePage}) => !isHomePage ? '#333333' : 'transparent'};
+  background-color: ${({ isHomePage }) => !isHomePage ? '#333333' : 'transparent'};
   height: 60px;
   display: flex;
   align-items: center;
@@ -13,6 +13,7 @@ export const Container = styled.div<{ isHomePage: boolean }>`
   justify-content: space-between;
   position: fixed;
   width: 100vw;
+  z-index: 999;
   /* box-shadow:0px 0px 5px 2px #cecece;  */
 `
 
