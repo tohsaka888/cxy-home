@@ -35,7 +35,7 @@ function Header() {
     <LoginContext.Provider value={{ visible, setVisible }}>
       <Container isHomePage={isHomePage}>
         <Flex>
-          <Logo onClick={() => router.back()}>CODER</Logo>
+          <Logo onClick={() => router.push('/')}>CODER</Logo>
           <Menu
             items={MenuItems}
             mode={'horizontal'}
