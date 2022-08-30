@@ -1,5 +1,5 @@
 import { competitionUrl } from '@config/baseUrl'
-import { Layout, Menu, Skeleton, Spin } from 'antd'
+import { BackTop, Layout, Menu, Skeleton, Spin } from 'antd'
 // import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
@@ -53,6 +53,7 @@ function Competiton() {
       <Content style={{ padding: '16px', marginLeft: '200px' }}>
         <Detail competition={competition} />
       </Content>
+      <BackTop />
     </Layout>
   )
 }

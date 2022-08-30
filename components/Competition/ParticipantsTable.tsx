@@ -1,4 +1,5 @@
 import { Table } from 'antd'
+import { uniqueId } from 'lodash';
 import React from 'react'
 
 type Props = {
@@ -25,7 +26,7 @@ const columns = [
 
 function ParticipantsTable({ competition }: Props) {
   return (
-    <Table dataSource={competition.participants} columns={columns} pagination={{ pageSize: 5, showQuickJumper: true }} />
+    <Table rowKey={(record, index) => uniqueId(record.username)} dataSource={competition.participants} columns={columns} pagination={{ pageSize: 5, showQuickJumper: true }} />
   )
 }
 
