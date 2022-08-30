@@ -1,9 +1,9 @@
 import { Flex } from '@components/Header/index.styled'
-import { Spin, Skeleton, Avatar, Carousel, Typography } from 'antd'
+import { Spin, Skeleton, Avatar, Carousel, Typography, Tag, Button } from 'antd'
 import Image from 'next/image'
 import React from 'react'
 import BarGraph from './BarGraph'
-import { CompetitionName, Container, Email, TimeLabel, Title, Username } from './index.styled'
+import { CompetitionName, Container, Email, InfoContainer, InfoLabel, InfoText, TimeLabel, Title, Username } from './index.styled'
 import LiquidGraph from './LiquidGraph'
 import ParticipantsTable from './ParticipantsTable'
 import PieGraph from './PieGraph'
@@ -34,7 +34,23 @@ function Detail({ competition }: Props) {
           </>}
         </Container>
         <Container style={{ flex: 1 }}>
-          {competition && <CompetitionName>{competition?.name}</CompetitionName>}
+          {competition && <>
+            <Flex style={{ borderBottom: '1px solid #cecece', alignItems: 'center', marginBottom: '8px', paddingBottom: '8px', justifyContent: 'space-between' }}>
+              <Flex style={{ alignItems: 'center' }}>
+                <CompetitionName>{competition?.name}</CompetitionName>
+                <Flex style={{ marginLeft: '8px' }}>
+                  <Tag color="#f50">{competition?.info.way}</Tag>
+                </Flex>
+                <Flex>
+                  <Tag color="#2db7f5">进行中</Tag>
+                </Flex>
+                <Flex>
+                  <Tag color="#87d068">可报名</Tag>
+                </Flex>
+              </Flex>
+              <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }}>报名比赛</Button>
+            </Flex>
+          </>}
           {!competition && <>
             <Skeleton.Input style={{ width: '500px' }} />
             <Flex style={{ marginTop: '8px', alignItems: 'center' }}>
@@ -64,11 +80,39 @@ function Detail({ competition }: Props) {
                 </Flex>
               </Flex>
             </Flex>
-            <Flex>
+            <Flex style={{ justifyContent: 'space-between', marginTop: '16px' }}>
+              <InfoContainer>
+                <InfoLabel>开始报名时间:</InfoLabel>
+                <InfoText>{competition.info.signUpStart}</InfoText>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoLabel>结束报名时间:</InfoLabel>
+                <InfoText>{competition.info.signUpEnd}</InfoText>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoLabel>比赛时间:</InfoLabel>
+                <InfoText>{competition.info.time}</InfoText>
+              </InfoContainer>
+            </Flex>
+            <Flex style={{ justifyContent: 'space-between' }}>
+              <InfoContainer>
+                <InfoLabel>比赛地点:</InfoLabel>
+                <InfoText>{competition.info.place}</InfoText>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoLabel>限报人数:</InfoLabel>
+                <InfoText>{competition.info.limit + ' 人'}</InfoText>
+              </InfoContainer>
+              <InfoContainer>
+                <InfoLabel>比赛时长:</InfoLabel>
+                <InfoText>{competition.info.duration}</InfoText>
+              </InfoContainer>
+            </Flex>
+            {/* <Flex>
               <Typography.Paragraph style={{ marginTop: '16px' }} ellipsis={{ rows: 8 }}>
                 {competition.intro}
               </Typography.Paragraph>
-            </Flex>
+            </Flex> */}
           </>}
         </Container>
       </Flex>
