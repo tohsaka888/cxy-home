@@ -32,7 +32,7 @@ const Home: NextPage<{ list: Competition.List[] }> = ({ list }) => {
       </Head>
 
       <main>
-        {/* <StarBackground /> */}
+        <StarBackground />
         <HomePage />
       </main>
     </div>

@@ -16,6 +16,7 @@ specifiers:
   react-icons: ^4.4.0
   styled-components: ^5.3.5
   svg-captcha: ^1.4.0
+  swr: ^1.3.0
   three: ^0.124.0
   typescript: 4.8.2
   vanta: ^0.5.22
@@ -29,6 +30,7 @@ dependencies:
   react-icons: 4.4.0_react@18.2.0
   styled-components: 5.3.5_biqbaboplfbrettd7655fr4n2y
   svg-captcha: 1.4.0
+  swr: 1.3.0_react@18.2.0
   three: 0.124.0
   vanta: 0.5.22
 
@@ -2882,6 +2884,14 @@ packages:
     engines: {node: '>=4.x'}
     dependencies:
       opentype.js: 0.7.3
+    dev: false
+
+  /swr/1.3.0_react@18.2.0:
+    resolution: {integrity: sha512-dkghQrOl2ORX9HYrMDtPa7LTVHJjCTeZoB1dqTbnnEDlSvN8JEKpYIYurDfvbQFUUS8Cg8PceFVZNkW0KNNYPw==}
+    peerDependencies:
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /tapable/2.2.1:

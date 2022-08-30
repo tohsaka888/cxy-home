@@ -4,8 +4,8 @@ export const Flex = styled.div`
   display: flex;
 `
 
-export const Container = styled.div`
-  background-color: transparent;
+export const Container = styled.div<{ isHomePage: boolean }>`
+  background-color: ${({isHomePage}) => !isHomePage ? '#333333' : 'transparent'};
   height: 60px;
   display: flex;
   align-items: center;

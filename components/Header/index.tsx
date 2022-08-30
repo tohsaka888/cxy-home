@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 import { ButtonArea, Container, Flex, Logo } from './index.styled'
 import { Button, Menu } from 'antd'
 import { BsGithub, BsXCircleFill, BsFillArrowUpCircleFill } from 'react-icons/bs'
@@ -6,14 +6,19 @@ import { MenuItems } from './MenuItems'
 import { useRouter } from 'next/router'
 import { LoginContext } from 'context/loginContext'
 import LoginPanel from '@components/LoginPanel'
+import { ListContext } from 'context/listContext'
 
 function Header() {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
   const router = useRouter()
   const [visible, setVisible] = useState<boolean>(false)
+  const { list } = useContext(ListContext)!
+  const isHomePage = useMemo(() => {
+    return !router.pathname.includes('competition')
+  }, [router])
   return (
     <LoginContext.Provider value={{ visible, setVisible }}>
-      <Container>
+      <Container isHomePage={isHomePage}>
         <Flex>
           <Logo onClick={() => router.back()}>CODER</Logo>
           <Menu
@@ -27,7 +32,7 @@ function Header() {
               color: '#fff'
             }}
             onClick={(prop) => {
-              router.push(prop.key)
+              router.push(prop.key + '/' + list[0].id)
             }}
           />
         </Flex>
