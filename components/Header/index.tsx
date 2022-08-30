@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ButtonArea, Container, Flex, Logo } from './index.styled'
 import { Button, Menu } from 'antd'
 import { BsGithub, BsXCircleFill, BsFillArrowUpCircleFill } from 'react-icons/bs'
@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import { LoginContext } from 'context/loginContext'
 import LoginPanel from '@components/LoginPanel'
 import { ListContext } from 'context/listContext'
+import { competitionUrl } from '@config/baseUrl'
 
 function Header() {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
@@ -16,6 +17,20 @@ function Header() {
   const isHomePage = useMemo(() => {
     return !router.pathname.includes('competition')
   }, [router])
+
+  const { setList } = useContext(ListContext)!
+
+  const getList = useCallback(async () => {
+    const res = await fetch(`${competitionUrl}/api/brief`, {
+      mode: 'cors'
+    })
+    const data = await res.json()
+    setList(data.list)
+  }, [setList])
+
+  useEffect(() => {
+    getList()
+  }, [getList, setList])
   return (
     <LoginContext.Provider value={{ visible, setVisible }}>
       <Container isHomePage={isHomePage}>
