@@ -1,11 +1,28 @@
 import HomePage from '@components/HomePage'
-import type { NextPage } from 'next'
+import { competitionUrl } from '@config/baseUrl'
+import { ListContext } from 'context/listContext'
+import type { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import { useCallback, useContext, useEffect } from 'react'
 
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
-const Home: NextPage = () => {
+const Home: NextPage<{ list: Competition.List[] }> = ({ list }) => {
+  const { setList } = useContext(ListContext)!
+
+  const getList = useCallback(async () => {
+    const res = await fetch(`${competitionUrl}/api/brief`, {
+      mode: 'cors'
+    })
+    const data = await res.json()
+    setList(data.list)
+  }, [setList])
+
+  useEffect(() => {
+    getList()
+  }, [getList, list, setList])
+
   return (
     <div>
       <Head>
@@ -15,11 +32,24 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <StarBackground />
+        {/* <StarBackground /> */}
         <HomePage />
       </main>
     </div>
   )
 }
+
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const res = await fetch(`${competitionUrl}/api/brief`, {
+//     mode: 'cors'
+//   })
+//   const data = await res.json()
+//   console.log(data)
+//   return {
+//     props: {
+//       list: data.list
+//     }
+//   }
+// }
 
 export default Home
