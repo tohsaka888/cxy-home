@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { ButtonArea, Container, Flex, Logo } from './index.styled'
+import { ButtonArea, Container, Flex, Logo, Username } from './index.styled'
 import { Button, Menu, message } from 'antd'
 import { BsGithub, BsXCircleFill, BsFillArrowUpCircleFill } from 'react-icons/bs'
 import { MenuItems } from './MenuItems'
 import { useRouter } from 'next/router'
 import { LoginContext } from 'context/loginContext'
 import LoginPanel from '@components/LoginPanel'
-import { ListContext } from 'context/listContext'
 import { competitionUrl } from '@config/baseUrl'
 import useSWR from 'swr'
 import { fetcher } from '@config/fetcher'
+import useLoginStatus from 'hooks/useLoginStatus'
 
 function Header() {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
@@ -21,8 +21,10 @@ function Header() {
   }, [router])
 
   // const { setList } = useContext(ListContext)!
+  const username = useLoginStatus()
 
   const { data, error } = useSWR(`${competitionUrl}/api/brief`, fetcher)
+
 
   const list = useMemo(() => data && data.list, [data])
 
@@ -69,7 +71,9 @@ function Header() {
                 }
               }} />}
           <BsGithub size={28} style={{ marginRight: '16px', color: '#fff' }} />
-          <Button type="primary" shape='round' onClick={() => { setVisible(true) }}>登录</Button>
+          {username 
+          ? <Username>欢迎, {username}!</Username>
+          : <Button type="primary" shape='round' onClick={() => { setVisible(true) }}>登录</Button>}
         </ButtonArea>
       </Container >
       <LoginPanel />
