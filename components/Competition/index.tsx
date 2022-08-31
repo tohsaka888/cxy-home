@@ -1,5 +1,5 @@
 import { Flex } from '@components/Header/index.styled'
-import { Spin, Skeleton, Avatar, Carousel, Typography, Tag, Button } from 'antd'
+import { Spin, Skeleton, Avatar, Carousel, Tag, Button } from 'antd'
 import Image from 'next/image'
 import React, { useMemo } from 'react'
 import BarGraph from './BarGraph'
@@ -9,12 +9,18 @@ import ParticipantsTable from './ParticipantsTable'
 import PieGraph from './PieGraph'
 import WordCloudGraph from './WordCloudGraph'
 import moment from 'moment'
+import { useRouter } from 'next/router'
+import useLoginStatus from 'hooks/useLoginStatus'
+import useIsSignUp from 'hooks/useIsSignUp'
 
 type Props = {
   competition: Competition.Competition | null
 }
 
 function Detail({ competition }: Props) {
+  const router = useRouter()
+  const username = useLoginStatus()
+  const isSignUp = useIsSignUp(router.query.id as string, username)
 
   const competitionStatus = useMemo(() => {
     if (competition) {
@@ -79,7 +85,7 @@ function Detail({ competition }: Props) {
                   <Tag color="#2db7f5">{competitionStatus || ''}</Tag>
                 </Flex>
                 <Flex>
-                  <Tag color="#87d068">{canSignUp ? '可报名' : '不可报名'}</Tag>
+                  {!isSignUp ? <Tag color="#87d068">{canSignUp ? '可报名' : '不可报名'}</Tag> : <Tag color="#87d068">已报名</Tag>}
                 </Flex>
               </Flex>
               <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }}>报名比赛</Button>
