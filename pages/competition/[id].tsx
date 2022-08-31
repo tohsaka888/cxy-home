@@ -2,7 +2,7 @@ import { competitionUrl } from '@config/baseUrl'
 import { BackTop, Layout, Menu, Skeleton, Spin } from 'antd'
 // import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import React, { useContext, useMemo } from 'react'
 import { fetcher } from '@config/fetcher'
 import { ListContext } from 'context/listContext'
@@ -11,7 +11,22 @@ import Detail from '@components/Competition'
 function Competiton() {
   const { Sider, Content } = Layout
   const router = useRouter()
-  const { list } = useContext(ListContext)!
+  const { cache } = useSWRConfig()
+  const shouldFetch = cache.get(`${competitionUrl}/api/brief`)
+  const result = useSWR(`${competitionUrl}/api/brief`, !shouldFetch ? fetcher : null)
+
+  const list: Competition.List[] = useMemo(() => {
+    if (shouldFetch) {
+      return shouldFetch.list
+    }
+
+    if (result.data) {
+      return result.data.list
+    } else {
+      return []
+    }
+  }, [result.data, shouldFetch])
+
 
   const { data } = useSWR(`${competitionUrl}/api/competition/${router.query.id}`, fetcher)
 
@@ -24,10 +39,10 @@ function Competiton() {
   }, [data])
 
   const menuItems = useMemo(() => {
-    return list.map((item) => ({
+    return list ? list.map((item) => ({
       label: item.name,
       key: item.id
-    }))
+    })) : []
   }, [list])
 
   return (
