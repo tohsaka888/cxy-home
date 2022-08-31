@@ -53,7 +53,7 @@ export const InfoLabel = styled.div`
 export const InfoContainer = styled.div`
   flex: 1;
   padding: 8px 8px;
-  background: #f9f9f9;
+  /* background: #f9f9f9; */
   margin-top: 6px;
   margin-right: 6px;
   border-radius: 5px;
