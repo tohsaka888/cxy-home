@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ButtonArea, Container, Flex, Logo } from './index.styled'
-import { Button, Menu } from 'antd'
+import { Button, Menu, message } from 'antd'
 import { BsGithub, BsXCircleFill, BsFillArrowUpCircleFill } from 'react-icons/bs'
 import { MenuItems } from './MenuItems'
 import { useRouter } from 'next/router'
@@ -8,29 +8,24 @@ import { LoginContext } from 'context/loginContext'
 import LoginPanel from '@components/LoginPanel'
 import { ListContext } from 'context/listContext'
 import { competitionUrl } from '@config/baseUrl'
+import useSWR from 'swr'
+import { fetcher } from '@config/fetcher'
 
 function Header() {
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
   const router = useRouter()
   const [visible, setVisible] = useState<boolean>(false)
-  const { list } = useContext(ListContext)!
+  // const { list } = useContext(ListContext)!
   const isHomePage = useMemo(() => {
     return !router.pathname.includes('competition')
   }, [router])
 
-  const { setList } = useContext(ListContext)!
+  // const { setList } = useContext(ListContext)!
 
-  const getList = useCallback(async () => {
-    const res = await fetch(`${competitionUrl}/api/brief`, {
-      mode: 'cors'
-    })
-    const data = await res.json()
-    setList(data.list)
-  }, [setList])
+  const { data, error } = useSWR(`${competitionUrl}/api/brief`, fetcher)
 
-  useEffect(() => {
-    getList()
-  }, [getList, setList])
+  const list = useMemo(() => data && data.list, [data])
+
   return (
     <LoginContext.Provider value={{ visible, setVisible }}>
       <Container isHomePage={isHomePage}>
@@ -47,7 +42,7 @@ function Header() {
               color: '#fff'
             }}
             onClick={(prop) => {
-              router.push(prop.key + '/' + list[0].id)
+              router.push(prop.key + '/' + (list && list[0].id))
             }}
           />
         </Flex>
