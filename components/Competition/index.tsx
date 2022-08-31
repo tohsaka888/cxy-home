@@ -1,19 +1,53 @@
 import { Flex } from '@components/Header/index.styled'
 import { Spin, Skeleton, Avatar, Carousel, Typography, Tag, Button } from 'antd'
 import Image from 'next/image'
-import React from 'react'
+import React, { useMemo } from 'react'
 import BarGraph from './BarGraph'
 import { CompetitionName, Container, Email, InfoContainer, InfoLabel, InfoText, TimeLabel, Title, Username } from './index.styled'
 import LiquidGraph from './LiquidGraph'
 import ParticipantsTable from './ParticipantsTable'
 import PieGraph from './PieGraph'
 import WordCloudGraph from './WordCloudGraph'
+import moment from 'moment'
 
 type Props = {
   competition: Competition.Competition | null
 }
 
 function Detail({ competition }: Props) {
+
+  const competitionStatus = useMemo(() => {
+    if (competition) {
+      const notStart = moment(moment.now()).isBefore(moment(competition.info.signUpStart))
+      const isEnd = moment(moment.now()).isAfter(moment(competition.info.signUpEnd))
+      const fitDate = moment(moment.now()).isBefore(moment(competition?.info.signUpEnd)) && moment(moment.now()).isAfter(moment(competition?.info.signUpStart))
+
+      if (fitDate) {
+        return '进行中'
+      }
+
+      if (notStart) {
+        return '未开始'
+      }
+
+      if (isEnd) {
+        return '已结束'
+      }
+    }
+  }, [competition])
+
+  const canSignUp = useMemo(() => {
+    if (competition) {
+      const fitDate = moment(moment.now()).isBefore(moment(competition?.info.signUpEnd)) && moment(moment.now()).isAfter(moment(competition?.info.signUpStart))
+      const fitLimit = competition?.participants.length < competition?.info.limit
+      if (fitDate && fitLimit) {
+        return true
+      } else {
+        return false
+      }
+    }
+  }, [competition])
+
   return (
     <>
       <Flex>
@@ -42,10 +76,10 @@ function Detail({ competition }: Props) {
                   <Tag color="#f50">{competition?.info.way}</Tag>
                 </Flex>
                 <Flex>
-                  <Tag color="#2db7f5">进行中</Tag>
+                  <Tag color="#2db7f5">{competitionStatus || ''}</Tag>
                 </Flex>
                 <Flex>
-                  <Tag color="#87d068">可报名</Tag>
+                  <Tag color="#87d068">{canSignUp ? '可报名' : '不可报名'}</Tag>
                 </Flex>
               </Flex>
               <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }}>报名比赛</Button>
@@ -124,15 +158,30 @@ function Detail({ competition }: Props) {
               <LiquidGraph competition={competition} />
             </div>
           </>}
+          {!competition && <>
+            <Flex style={{ justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+              <Spin />
+            </Flex>
+          </>}
         </Container>
         <Container style={{ flex: 1 }}>
           <Title>奖项设置</Title>
           <Flex>
             <div style={{ width: '350px', height: '250px' }}>
               {competition && <PieGraph competition={competition} />}
+              {!competition && <>
+                <Flex style={{ justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+                  <Spin />
+                </Flex>
+              </>}
             </div>
             <div style={{ flex: 1, height: '250px', marginLeft: '24px' }}>
               {competition && <BarGraph competition={competition} />}
+              {!competition && <>
+                <Flex style={{ justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+                  <Spin />
+                </Flex>
+              </>}
             </div>
           </Flex>
         </Container>
@@ -141,10 +190,20 @@ function Detail({ competition }: Props) {
         <Container style={{ marginRight: '16px', width: '600px' }}>
           <Title style={{ marginBottom: '8px' }}>报名用户词云</Title>
           {competition && <WordCloudGraph competition={competition} />}
+          {!competition && <>
+            <Flex style={{ justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+              <Spin />
+            </Flex>
+          </>}
         </Container>
         <Container style={{ flex: 1 }}>
           <Title style={{ marginBottom: '8px' }}>报名用户一览</Title>
           {competition && <ParticipantsTable competition={competition} />}
+          {!competition && <>
+            <Flex style={{ justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+              <Spin />
+            </Flex>
+          </>}
         </Container>
       </Flex>
     </>
