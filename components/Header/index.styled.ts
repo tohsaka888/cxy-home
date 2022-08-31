@@ -32,3 +32,9 @@ export const Logo = styled.div`
   font-style: italic;
   cursor: pointer;
 `
+
+export const Username = styled.div`
+  font-size: 1.3rem;
+  /* font-weight: bold; */
+  color: #fff;
+`
