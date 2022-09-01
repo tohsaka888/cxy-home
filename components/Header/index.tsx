@@ -72,7 +72,7 @@ function Header() {
               }} />}
           <BsGithub size={28} style={{ marginRight: '16px', color: '#fff' }} />
           {username 
-          ? <Username>欢迎, {username}!</Username>
+          ? <Button type="primary" shape='round' onClick={() => { localStorage.removeItem('token') }} danger>退出登录</Button>
           : <Button type="primary" shape='round' onClick={() => { setVisible(true) }}>登录</Button>}
         </ButtonArea>
       </Container >
