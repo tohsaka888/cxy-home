@@ -5,7 +5,7 @@ import useSWR from 'swr'
 type Props = {
   id: string;
    username?: string;
-   onSuccess: () => void
+   onSuccess: (data: boolean, key: string) => void
 }
 
 function useIsSignUp({id, username, onSuccess}: Props) {
