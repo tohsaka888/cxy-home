@@ -21,8 +21,11 @@ type Props = {
 function Detail({ competition }: Props) {
   const router = useRouter()
   const username = useLoginStatus()
-  const { isSignUp, loading } = useIsSignUp(router.query.id as string, username)
   const [isloading, setIsLoading] = useState<boolean>(false)
+  const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: () => {
+    setIsLoading(false)
+  }})
+  
 
   const competitionStatus = useMemo(() => {
     if (competition) {
@@ -67,7 +70,6 @@ function Detail({ competition }: Props) {
         body: JSON.stringify({ username })
       })
       const data = await res.json()
-      setIsLoading(false)
       if (data.success) {
         if (data.isSignUp) {
           message.success('参加成功')
@@ -79,7 +81,6 @@ function Detail({ competition }: Props) {
       }
     } else {
       message.warning('请先登录!')
-      setIsLoading(false)
     }
   }, [router.query.id, username])
 
@@ -94,7 +95,6 @@ function Detail({ competition }: Props) {
         body: JSON.stringify({ username })
       })
       const data = await res.json()
-      setIsLoading(false)
       if (data.success) {
         if (!data.isSignUp) {
           message.success('取消参加成功')
@@ -106,7 +106,6 @@ function Detail({ competition }: Props) {
       }
     } else {
       message.warning('请先登录!')
-      setIsLoading(false)
     }
   }, [router.query.id, username])
 
