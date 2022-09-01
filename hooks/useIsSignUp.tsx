@@ -1,9 +1,14 @@
 import { competitionUrl } from '@config/baseUrl'
-import { useRouter } from 'next/router'
 import React from 'react'
 import useSWR from 'swr'
 
-function useIsSignUp(id: string, username?: string) {
+type Props = {
+  id: string;
+   username?: string;
+   onSuccess: () => void
+}
+
+function useIsSignUp({id, username, onSuccess}: Props) {
   const { data: isSignUp, error } = useSWR<boolean>(username ? `${competitionUrl}/api/competition/is-sign-up/${id}` : null, async (url) => {
     const res = await fetch(url, {
       method: 'POST',
@@ -14,7 +19,10 @@ function useIsSignUp(id: string, username?: string) {
     })
     const data = await res.json()
     return data.isSignUp
-  }, {refreshInterval: 100})
+  }, {
+    refreshInterval: 100,
+    onSuccess: onSuccess
+  })
 
   return { isSignUp, loading: isSignUp === undefined }
 }
