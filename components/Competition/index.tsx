@@ -22,8 +22,10 @@ function Detail({ competition }: Props) {
   const router = useRouter()
   const username = useLoginStatus()
   const [isloading, setIsLoading] = useState<boolean>(false)
-  const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: () => {
-    setIsLoading(false)
+  const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: (data, key) => {
+    if (isSignUp !== data) {
+      setIsLoading(false)
+    }
   }})
   
 
