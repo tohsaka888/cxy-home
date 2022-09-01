@@ -9,6 +9,7 @@ import Fetch from 'node-fetch'
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
 const Home: NextPage<{ list: Competition.List[] }> = ({ list }) => {
+  console.log(list)
   return (
     <div>
       <main>
