@@ -79,6 +79,7 @@ function Detail({ competition }: Props) {
       }
     } else {
       message.warning('请先登录!')
+      setIsLoading(false)
     }
   }, [router.query.id, username])
 
@@ -105,6 +106,7 @@ function Detail({ competition }: Props) {
       }
     } else {
       message.warning('请先登录!')
+      setIsLoading(false)
     }
   }, [router.query.id, username])
 
