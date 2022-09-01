@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { WordCloud } from '@ant-design/plots';
+import { Empty } from 'antd';
+import { Flex } from '@components/Header/index.styled';
 
 type Props = {
   competition: Competition.Competition
@@ -31,7 +33,13 @@ const WordCloudGraph = ({ competition }: Props) => {
 
   };
 
-  return <WordCloud {...config} />;
+  return <>
+    {competition.participants.length !== 0 ? <WordCloud {...config} /> : <>
+      <Flex style={{ alignItems: 'center', justifyContent: 'center', height: '80%' }}>
+        <Empty description="暂无数据" />
+      </Flex>
+    </>}
+  </>;
 };
 
 export default WordCloudGraph
