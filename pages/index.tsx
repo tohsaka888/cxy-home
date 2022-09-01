@@ -1,22 +1,20 @@
 import HomePage from '@components/HomePage'
 import { competitionUrl } from '@config/baseUrl'
-import { ListContext } from 'context/listContext'
-import createFetch from '@vercel/fetch'
+import { fetcher } from '@config/fetcher'
 import type { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import Fetch from 'node-fetch'
+import useSWR, { SWRConfig, unstable_serialize } from 'swr'
 
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
-const Home: NextPage<{ list: Competition.List[] }> = ({ list }) => {
-  console.log(list)
+const Home: NextPage<{ fallback: any }> = ({ fallback }) => {
   return (
-    <div>
+    <SWRConfig value={{ fallback }}>
       <main>
         <StarBackground />
         <HomePage />
       </main>
-    </div>
+    </SWRConfig>
   )
 }
 
@@ -34,13 +32,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
       }
     })
     data = await res.json()
-    console.log(data)
   } catch (error) {
     console.log(error)
   }
   return {
     props: {
-      list: data ? data.list : []
+      fallback: {
+        [competitionUrl + '/api/brief']: data,
+      }
     }
   }
 }
