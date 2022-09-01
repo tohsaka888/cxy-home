@@ -5,6 +5,8 @@ import useSWR, { SWRConfig } from 'swr'
 import React, { useMemo } from 'react'
 import Detail from '@components/Competition'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { fetcher } from '@config/fetcher'
+import useSWRImmutable from 'swr/immutable'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(`${competitionUrl}/api/brief`)
@@ -44,7 +46,7 @@ export const Content = () => {
   const { Sider, Content } = Layout
   const router = useRouter()
   const { data } = useSWR(`${competitionUrl}/api/brief`)
-  const { data: { competition } } = useSWR(`${competitionUrl}/api/competition/${router.query.id}`)
+  const { data: { competition } } = useSWRImmutable(`${competitionUrl}/api/competition/${router.query.id}`, fetcher)
   const menuItems = useMemo(() => {
     return data ? (data.list as Competition.List[]).map(item => ({
       label: item.name,
