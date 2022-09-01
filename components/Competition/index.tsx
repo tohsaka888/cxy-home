@@ -23,7 +23,7 @@ function Detail({ competition }: Props) {
   const username = useLoginStatus()
   const [isloading, setIsLoading] = useState<boolean>(false)
   const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: (data, key) => {
-    if (isSignUp !== data) {
+    if (isSignUp !== data && isSignUp !== undefined) {
       if (isSignUp) {
         message.success('取消参加成功')
       } else {
