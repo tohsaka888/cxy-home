@@ -1,7 +1,7 @@
 import { Flex } from '@components/Header/index.styled'
-import { Spin, Skeleton, Avatar, Carousel, Tag, Button } from 'antd'
+import { Spin, Skeleton, Avatar, Carousel, Tag, Button, message } from 'antd'
 import Image from 'next/image'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import BarGraph from './BarGraph'
 import { CompetitionName, Container, Email, InfoContainer, InfoLabel, InfoText, TimeLabel, Title, Username } from './index.styled'
 import LiquidGraph from './LiquidGraph'
@@ -12,6 +12,7 @@ import moment from 'moment'
 import { useRouter } from 'next/router'
 import useLoginStatus from 'hooks/useLoginStatus'
 import useIsSignUp from 'hooks/useIsSignUp'
+import { competitionUrl } from '@config/baseUrl'
 
 type Props = {
   competition: Competition.Competition | null
@@ -20,7 +21,8 @@ type Props = {
 function Detail({ competition }: Props) {
   const router = useRouter()
   const username = useLoginStatus()
-  const isSignUp = useIsSignUp(router.query.id as string, username)
+  const { isSignUp, loading } = useIsSignUp(router.query.id as string, username)
+  const [isloading, setIsLoading] = useState<boolean>(false)
 
   const competitionStatus = useMemo(() => {
     if (competition) {
@@ -53,6 +55,58 @@ function Detail({ competition }: Props) {
       }
     }
   }, [competition])
+
+  const signUp = useCallback(async () => {
+    setIsLoading(true)
+    if (username) {
+      const res = await fetch(`${competitionUrl}/api/competition/signup/${router.query.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      })
+      const data = await res.json()
+      setIsLoading(false)
+      if (data.success) {
+        if (data.isSignUp) {
+          message.success('参加成功')
+        } else {
+          message.error('参加失败')
+        }
+      } else {
+        message.error(data.error)
+      }
+    } else {
+      message.warning('请先登录!')
+    }
+  }, [router.query.id, username])
+
+  const rejection = useCallback(async () => {
+    setIsLoading(true)
+    if (username) {
+      const res = await fetch(`${competitionUrl}/api/competition/rejection/${router.query.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username })
+      })
+      const data = await res.json()
+      setIsLoading(false)
+      if (data.success) {
+        if (!data.isSignUp) {
+          message.success('取消参加成功')
+        } else {
+          message.error('取消参加失败')
+        }
+      } else {
+        message.error(data.error)
+      }
+    } else {
+      message.warning('请先登录!')
+    }
+  }, [router.query.id, username])
 
   return (
     <>
@@ -88,7 +142,10 @@ function Detail({ competition }: Props) {
                   {!isSignUp ? <Tag color="#87d068">{canSignUp ? '可报名' : '不可报名'}</Tag> : <Tag color="#87d068">已报名</Tag>}
                 </Flex>
               </Flex>
-              <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }}>报名比赛</Button>
+              {!isSignUp
+                ? <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }} onClick={signUp} disabled={!canSignUp} loading={isloading}>报名比赛</Button>
+                : <Button shape={'round'} type="primary" danger style={{ justifySelf: 'end' }} disabled={!canSignUp} onClick={rejection} loading={isloading}>取消报名</Button>
+              }
             </Flex>
           </>}
           {!competition && <>
