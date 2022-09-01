@@ -3,7 +3,7 @@ import { competitionUrl } from '@config/baseUrl'
 import { fetcher } from '@config/fetcher'
 import type { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
-import useSWR, { SWRConfig, unstable_serialize } from 'swr'
+import { SWRConfig } from 'swr'
 
 const StarBackground = dynamic(() => import('@components/StarBackground'), { ssr: false })
 
