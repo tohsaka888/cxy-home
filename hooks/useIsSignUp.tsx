@@ -4,7 +4,7 @@ import React from 'react'
 import useSWR from 'swr'
 
 function useIsSignUp(id: string, username?: string) {
-  const { data: isSignUp } = useSWR<boolean>(username ? `${competitionUrl}/api/competition/is-sign-up/${id}` : null, async (url) => {
+  const { data: isSignUp, error } = useSWR<boolean>(username ? `${competitionUrl}/api/competition/is-sign-up/${id}` : null, async (url) => {
     const res = await fetch(url, {
       method: 'POST',
       headers: {
@@ -14,9 +14,9 @@ function useIsSignUp(id: string, username?: string) {
     })
     const data = await res.json()
     return data.isSignUp
-  })
+  }, {refreshInterval: 100})
 
-  return isSignUp
+  return { isSignUp, loading: isSignUp === undefined }
 }
 
 export default useIsSignUp
