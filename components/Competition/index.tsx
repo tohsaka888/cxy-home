@@ -24,6 +24,11 @@ function Detail({ competition }: Props) {
   const [isloading, setIsLoading] = useState<boolean>(false)
   const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: (data, key) => {
     if (isSignUp !== data) {
+      if (isSignUp) {
+        message.success('取消参加成功')
+      } else {
+        message.success('参加成功')
+      }
       setIsLoading(false)
     }
   }})
@@ -74,7 +79,7 @@ function Detail({ competition }: Props) {
       const data = await res.json()
       if (data.success) {
         if (data.isSignUp) {
-          message.success('参加成功')
+          // message.success('参加成功')
         } else {
           message.error('参加失败')
         }
@@ -99,7 +104,7 @@ function Detail({ competition }: Props) {
       const data = await res.json()
       if (data.success) {
         if (!data.isSignUp) {
-          message.success('取消参加成功')
+          // message.success('取消参加成功')
         } else {
           message.error('取消参加失败')
         }
