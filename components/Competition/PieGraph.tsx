@@ -91,4 +91,6 @@ const PieGraph = ({ competition }: Props) => {
   return <Pie {...config} />;
 };
 
-export default PieGraph
+const memoPieGraph = React.memo(PieGraph)
+
+export default memoPieGraph
