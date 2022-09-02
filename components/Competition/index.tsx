@@ -13,6 +13,7 @@ import { useRouter } from 'next/router'
 import useLoginStatus from 'hooks/useLoginStatus'
 import useIsSignUp from 'hooks/useIsSignUp'
 import { competitionUrl } from '@config/baseUrl'
+import AwardList from './AwardList'
 
 type Props = {
   competition: Competition.Competition | null
@@ -22,17 +23,20 @@ function Detail({ competition }: Props) {
   const router = useRouter()
   const username = useLoginStatus()
   const [isloading, setIsLoading] = useState<boolean>(false)
-  const { isSignUp } = useIsSignUp({id: router.query.id as string, username, onSuccess: (data, key) => {
-    if (isSignUp !== data && isSignUp !== undefined) {
-      if (isSignUp) {
-        message.success('取消参加成功')
-      } else {
-        message.success('参加成功')
+  const [visible, setVisible] = useState<boolean>(false)
+  const { isSignUp } = useIsSignUp({
+    id: router.query.id as string, username, onSuccess: (data, key) => {
+      if (isSignUp !== data && isSignUp !== undefined) {
+        if (isSignUp) {
+          message.success('取消参加成功')
+        } else {
+          message.success('参加成功')
+        }
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
-  }})
-  
+  })
+
 
   const competitionStatus = useMemo(() => {
     if (competition) {
@@ -118,6 +122,7 @@ function Detail({ competition }: Props) {
 
   return (
     <>
+      {competition && <AwardList visible={visible} setVisible={setVisible} winners={competition?.winners} />}
       <Flex>
         <Container style={{ marginRight: '16px' }}>
           {competition && <Flex>
@@ -150,10 +155,15 @@ function Detail({ competition }: Props) {
                   {!isSignUp ? <Tag color="#87d068">{canSignUp ? '可报名' : '不可报名'}</Tag> : <Tag color="#87d068">已报名</Tag>}
                 </Flex>
               </Flex>
-              {!isSignUp
-                ? <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }} onClick={signUp} disabled={!canSignUp} loading={isloading}>报名比赛</Button>
-                : <Button shape={'round'} type="primary" danger style={{ justifySelf: 'end' }} disabled={!canSignUp} onClick={rejection} loading={isloading}>取消报名</Button>
-              }
+              <Flex>
+                <Button shape={'round'} style={{ marginRight: '8px' }}
+                  onClick={() => setVisible(!visible)}
+                >查看获奖名单</Button>
+                {!isSignUp
+                  ? <Button shape={'round'} type="primary" style={{ justifySelf: 'end' }} onClick={signUp} disabled={!canSignUp} loading={isloading}>报名比赛</Button>
+                  : <Button shape={'round'} type="primary" danger style={{ justifySelf: 'end' }} disabled={!canSignUp} onClick={rejection} loading={isloading}>取消报名</Button>
+                }
+              </Flex>
             </Flex>
           </>}
           {!competition && <>
