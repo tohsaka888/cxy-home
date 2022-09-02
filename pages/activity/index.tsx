@@ -1,22 +1,33 @@
+/*
+ * @Author: tohsaka888
+ * @Date: 2022-09-02 14:10:53
+ * @LastEditors: tohsaka888
+ * @LastEditTime: 2022-09-02 16:05:18
+ * @Description: 请填写简介
+ */
 import { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import createFetch from '@vercel/fetch'
 import { activityUrl } from '@config/baseUrl'
-import useSWR, { SWRConfig } from 'swr'
+import { SWRConfig } from 'swr'
+import Detail from '@components/Activity'
 
-const Activity: NextPage<{ fallback: any }> = ({ fallback }) => {
+const Activity: NextPage<{ fallback: any, list: Activity.Activity[] }> = ({ fallback, list }) => {
   return (
-    <SWRConfig value={{ fallback }}>Activity</SWRConfig>
+    <SWRConfig value={{ fallback }}>
+      <Detail list={list} />
+    </SWRConfig>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  let data = null
+  let data: any = null
   try {
     const myfetch = createFetch(undefined)
     const res = await myfetch(`${activityUrl}/api/list`, {
       method: 'POST',
-      body: JSON.stringify({ page: 1, limit: 10 })
+      body: JSON.stringify({ page: 1, limit: 10 }),
+      headers: { 'Content-Type': 'application/json' },
     })
     data = await res.json()
   } catch (error) {
@@ -26,8 +37,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       fallback: {
-        [`${activityUrl}/api/list`]: data
-      }
+        [`${activityUrl}/api/list`]: data,
+      },
+      list: data ? data.list : []
     }
   }
 }
