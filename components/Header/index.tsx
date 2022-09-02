@@ -44,7 +44,7 @@ function Header() {
               color: '#fff'
             }}
             onClick={(prop) => {
-              router.push(prop.key + '/' + (list && list[0].id))
+              router.push('/' + prop.key + '/' + (list && list[0].id))
             }}
           />
         </Flex>
