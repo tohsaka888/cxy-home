@@ -7,6 +7,7 @@ import Detail from '@components/Competition'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { fetcher } from '@config/fetcher'
 import useSWRImmutable from 'swr/immutable'
+import Header from '@components/Header'
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(`${competitionUrl}/api/brief`)
@@ -37,6 +38,7 @@ const Competiton: NextPage<{ fallback: any }> = ({ fallback }) => {
 
   return (
     <SWRConfig value={{ fallback }}>
+      <Header />
       <Content />
     </SWRConfig>
   )

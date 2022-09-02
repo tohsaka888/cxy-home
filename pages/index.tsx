@@ -1,6 +1,6 @@
+import Header from '@components/Header'
 import HomePage from '@components/HomePage'
 import { competitionUrl } from '@config/baseUrl'
-import { fetcher } from '@config/fetcher'
 import type { GetServerSideProps, NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { SWRConfig } from 'swr'
@@ -11,6 +11,7 @@ const Home: NextPage<{ fallback: any }> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <main>
+        <Header />
         <StarBackground />
         <HomePage />
       </main>
