@@ -134,25 +134,30 @@ function LoginPanel() {
 
   const register = useCallback(async () => {
     setLoading(true)
-    const res = await fetch(`${loginUrl}/api/register`, {
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
-      method: 'POST',
-      body: JSON.stringify({
-        username: account.username,
-        password: account.password,
-        email: account.email
+    try {
+      await form.validateFields()
+      const res = await fetch(`${loginUrl}/api/register`, {
+        mode: 'cors',
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify({
+          username: account.username,
+          password: account.password,
+          email: account.email
+        })
       })
-    })
-    const data = await res.json()
-    if (data.success) {
-      if (data.isRegister) {
-        message.success('注册成功')
-        setCurrent('用户名登录')
-        setCanRegister(false)
+      const data = await res.json()
+      if (data.success) {
+        if (data.isRegister) {
+          message.success('注册成功')
+          setCurrent('用户名登录')
+          setCanRegister(false)
+        }
+      } else {
+        message.error(data.error)
       }
-    } else {
-      message.error(data.error)
+    } catch (e) {
+      message.error((e as Error).message)
     }
     setLoading(false)
   }, [account.email, account.password, account.username])
@@ -405,6 +410,7 @@ function LoginPanel() {
           </Form.Item>
           <Flex style={{ alignItems: 'center', justifyContent: 'center', marginTop: '8px' }}>
             <Button style={{ width: '80%', height: '38px' }} type="primary" htmlType="submit" onClick={register} loading={loading}
+              disabled={account.username === '' || account.password === ''}
             >注册</Button>
           </Flex>
         </>}
