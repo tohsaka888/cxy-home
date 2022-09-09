@@ -2,7 +2,7 @@
  * @Author: tohsaka888
  * @Date: 2022-09-02 14:10:53
  * @LastEditors: tohsaka888
- * @LastEditTime: 2022-09-09 09:35:06
+ * @LastEditTime: 2022-09-09 09:57:47
  * @Description: 请填写简介
  */
 import { competitionUrl } from '@config/baseUrl'
@@ -24,7 +24,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: listIds,
-    fallback: false
+    fallback: 'blocking'
   }
 }
 
