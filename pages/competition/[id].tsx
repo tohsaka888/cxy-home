@@ -1,3 +1,10 @@
+/*
+ * @Author: tohsaka888
+ * @Date: 2022-09-02 14:10:53
+ * @LastEditors: tohsaka888
+ * @LastEditTime: 2022-09-09 09:35:06
+ * @Description: 请填写简介
+ */
 import { competitionUrl } from '@config/baseUrl'
 import { BackTop, Layout, Menu, Spin } from 'antd'
 import { useRouter } from 'next/router'
@@ -32,16 +39,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       }
     }
   }
-}
-
-const Competiton: NextPage<{ fallback: any }> = ({ fallback }) => {
-
-  return (
-    <SWRConfig value={{ fallback }}>
-      <Header />
-      <Content />
-    </SWRConfig>
-  )
 }
 
 export const Content = () => {
@@ -83,5 +80,17 @@ export const Content = () => {
     </Layout>
   )
 }
+
+const Competiton: NextPage<{ fallback: any }> = ({ fallback }) => {
+
+  return (
+    <SWRConfig value={{ fallback }}>
+      <Header />
+      <Content />
+    </SWRConfig>
+  )
+}
+
+
 
 export default Competiton
