@@ -122,7 +122,7 @@ function Detail({ competition }: Props) {
 
   return (
     <>
-      {competition && <AwardList visible={visible} setVisible={setVisible} winners={competition?.winners} />}
+      {competition && <AwardList visible={visible} setVisible={setVisible} competition={competition} />}
       <Flex>
         <Container style={{ marginRight: '16px' }}>
           {competition && <Flex>

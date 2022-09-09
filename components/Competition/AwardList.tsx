@@ -1,10 +1,17 @@
+/*
+ * @Author: tohsaka888
+ * @Date: 2022-09-02 14:10:53
+ * @LastEditors: tohsaka888
+ * @LastEditTime: 2022-09-09 08:37:55
+ * @Description: 请填写简介
+ */
 import { Button, Form, Input, Modal, Table } from 'antd'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 type Props = {
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  winners: Competition.Winner[]
+  competition: Competition.Competition;
 }
 
 const columns = [
@@ -35,17 +42,21 @@ const columns = [
   }
 ]
 
-function AwardList({ visible, setVisible, winners }: Props) {
+function AwardList({ visible, setVisible, competition }: Props) {
   const [searchParams, setSearchParams] = useState<{ username: string; email: string; }>({ username: '', email: '' })
-  const [dataSource, setDataSource] = useState<Competition.Winner[]>(winners)
+  const [dataSource, setDataSource] = useState<Competition.Winner[]>(competition.winners)
 
   const onSearch = useCallback(() => {
     setDataSource(
       searchParams.username === '' && searchParams.email === ''
-        ? winners
-        : winners.filter((winner) => (winner.username.includes(searchParams.username) && winner.email.includes(searchParams.email)))
+        ? competition.winners
+        : competition.winners.filter((winner) => (winner.username.includes(searchParams.username) && winner.email.includes(searchParams.email)))
     )
-  }, [searchParams.email, searchParams.username, winners])
+  }, [competition.winners, searchParams.email, searchParams.username])
+
+  useEffect(() => {
+    onSearch()
+  }, [onSearch])
 
   return (
     <Modal visible={visible} footer={null} width={700} title={'获奖名单'}
