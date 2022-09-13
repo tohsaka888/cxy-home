@@ -160,7 +160,7 @@ function LoginPanel() {
       message.error((e as Error).message)
     }
     setLoading(false)
-  }, [account.email, account.password, account.username])
+  }, [account.email, account.password, account.username, form])
 
   const forget = useCallback(async () => {
     setLoading(true)
