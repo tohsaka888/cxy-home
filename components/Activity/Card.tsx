@@ -2,7 +2,7 @@
  * @Author: tohsaka888
  * @Date: 2022-09-02 16:20:07
  * @LastEditors: tohsaka888
- * @LastEditTime: 2022-09-02 17:06:00
+ * @LastEditTime: 2022-09-15 11:47:50
  * @Description: 请填写简介
  */
 
@@ -32,7 +32,7 @@ function Card({ activity }: Props) {
           <Username style={{ fontSize: '15px' }}>
             {activity.author}
           </Username>
-          <Email>{'<' + activity.email + '>'}</Email>
+          <Email>{'<' + (activity.email || '不可查看') + '>'}</Email>
         </Flex>
       </Flex>
       <Typography style={{ marginLeft: '50px', marginTop: '8px' }}>
@@ -44,7 +44,7 @@ function Card({ activity }: Props) {
       <div style={{ marginLeft: '50px', marginTop: '8px' }}>
         <AntImage.PreviewGroup >
           {activity.images.map((image, index) => {
-            return <AntImage src={image} key={index} width={280} style={{ marginRight: '8px' }} />
+            return <AntImage src={image.url} key={index} width={280} style={{ marginRight: '8px' }} />
           })}
         </AntImage.PreviewGroup>
       </div>
